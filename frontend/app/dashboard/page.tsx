@@ -46,7 +46,7 @@ export default function DashboardPage() {
       <Sidebar />
 
       {/* Main Content Area */}
-      <main className="flex-1 md:ml-[240px] p-6 md:p-10">
+      <main className="flex-1 md:ml-[240px] p-6 pb-24 md:p-10">
         <div className="max-w-6xl mx-auto flex flex-col gap-8">
           
           {/* SECTION 1 — Welcome Header */}

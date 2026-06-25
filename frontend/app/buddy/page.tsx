@@ -89,7 +89,7 @@ export default function BuddyPage() {
     <div className="flex h-screen bg-[#0a0a0f] text-[#f1f0f5] overflow-hidden">
       <Sidebar />
       
-      <main className="flex-1 md:ml-[240px] flex flex-col h-full relative">
+      <main className="flex-1 md:ml-[240px] flex flex-col h-full relative pb-16 md:pb-0">
         {/* HEADER */}
         <header className="h-16 shrink-0 flex items-center justify-between px-6 border-b border-[#1e1e2e] bg-[#0a0a0f]/80 backdrop-blur-md z-10">
           <div className="flex items-center gap-3">
