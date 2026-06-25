@@ -1,6 +1,3 @@
-"use client";
-
-import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { patterns } from "@/lib/patterns/data";
 import Sidebar from "@/components/ui/Sidebar";
@@ -19,10 +16,7 @@ const iconMap: Record<string, any> = {
   "Undo2": Undo2
 };
 
-export default function PatternDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  
+export default function PatternDetailPage({ params }: { params: { slug: string } }) {
   const pattern = patterns.find(p => p.slug === params.slug);
 
   if (!pattern) {
@@ -31,9 +25,9 @@ export default function PatternDetailPage() {
         <Sidebar />
         <main className="flex-1 md:ml-[240px] p-6 md:p-10 flex flex-col items-center justify-center">
           <h1 className="text-2xl font-bold text-[#f43f5e] mb-4">Pattern Not Found</h1>
-          <button onClick={() => router.push('/patterns')} className="px-4 py-2 bg-[#1e1e2e] rounded-lg">
+          <Link href="/patterns" className="px-4 py-2 bg-[#1e1e2e] rounded-lg inline-block">
             Return to Library
-          </button>
+          </Link>
         </main>
       </div>
     );
