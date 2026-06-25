@@ -4,7 +4,7 @@
  * Import this wherever you need data from the backend — never call fetch() directly in components.
  */
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+const BASE = process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" && window.location.hostname === "localhost" ? "http://localhost:5000" : "");
 
 // ─── Shared fetch helper ──────────────────────────────────────────────────────
 async function request<T>(
