@@ -2,7 +2,7 @@
 ThinkDSA Backend — Flask Application Entry Point
 """
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
@@ -20,12 +20,14 @@ from routes.buddy import buddy_bp
 
 def create_app() -> Flask:
     """Application factory."""
-    app = Flask(__name__)
+    # Point Flask's static folder to the Next.js export directory
+    frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend', 'out'))
+    app = Flask(__name__, static_folder=frontend_dir, static_url_path='/')
 
-    # ─── CORS — allow frontend dev server ───
+    # ─── CORS — allow all for unified deployment ───
     CORS(
         app,
-        resources={r"/api/*": {"origins": ["http://localhost:3000"]}},
+        resources={r"/api/*": {"origins": "*"}},
         supports_credentials=True,
     )
 
@@ -41,8 +43,28 @@ def create_app() -> Flask:
     def health():
         return jsonify({"status": "ok", "service": "ThinkDSA API"}), 200
 
-    return app
+    # ─── Catch-all for Next.js SPA ───
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_frontend(path):
+        # Prevent routing API calls to the frontend
+        if path.startswith("api/"):
+            return jsonify({"error": "Not Found"}), 404
+            
+        # Check if the exact file exists (e.g., globals.css, images, etc.)
+        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+            return send_from_directory(app.static_folder, path)
+        # Check if the .html extension of the file exists (Next.js routing)
+        elif path != "" and os.path.exists(os.path.join(app.static_folder, path + '.html')):
+            return send_from_directory(app.static_folder, path + '.html')
+        # Check if it's a dynamic route like patterns/two-pointers
+        elif path != "" and os.path.exists(os.path.join(app.static_folder, path, 'index.html')):
+            return send_from_directory(app.static_folder, os.path.join(path, 'index.html'))
+        # Otherwise fallback to index.html
+        else:
+            return send_from_directory(app.static_folder, 'index.html')
 
+    return app
 
 app = create_app()
 

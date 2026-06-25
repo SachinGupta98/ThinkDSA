@@ -227,3 +227,9 @@ export default function PatternDetailPage() {
 
 // Needed to import this icon missing from above
 import { BookOpen } from "lucide-react";
+
+export async function generateStaticParams() {
+  return patterns.map((pattern) => ({
+    slug: pattern.slug,
+  }));
+}
