@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+# Environment Variables (CRITICAL)
+.env
+.env.*
+!.env.example
+
+# Next.js
+.next/
+out/
+build/
+
+# IDE / OS
+.DS_Store
+.vscode/
+.idea/
+*.pem
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel
