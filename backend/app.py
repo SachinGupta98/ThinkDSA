@@ -20,9 +20,9 @@ from routes.buddy import buddy_bp
 
 def create_app() -> Flask:
     """Application factory."""
-    # Point Flask's static folder to the Next.js export directory
+    # Disable Flask's default static file serving to prevent 404 conflicts with our catch-all route
     frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend', 'out'))
-    app = Flask(__name__, static_folder=frontend_dir, static_url_path='/')
+    app = Flask(__name__, static_folder=None)
 
     # ─── CORS — allow all for unified deployment ───
     CORS(
@@ -52,17 +52,17 @@ def create_app() -> Flask:
             return jsonify({"error": "Not Found"}), 404
             
         # Check if the exact file exists (e.g., globals.css, images, etc.)
-        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-            return send_from_directory(app.static_folder, path)
+        if path != "" and os.path.exists(os.path.join(frontend_dir, path)):
+            return send_from_directory(frontend_dir, path)
         # Check if the .html extension of the file exists (Next.js routing)
-        elif path != "" and os.path.exists(os.path.join(app.static_folder, path + '.html')):
-            return send_from_directory(app.static_folder, path + '.html')
+        elif path != "" and os.path.exists(os.path.join(frontend_dir, path + '.html')):
+            return send_from_directory(frontend_dir, path + '.html')
         # Check if it's a dynamic route like patterns/two-pointers
-        elif path != "" and os.path.exists(os.path.join(app.static_folder, path, 'index.html')):
-            return send_from_directory(app.static_folder, os.path.join(path, 'index.html'))
+        elif path != "" and os.path.exists(os.path.join(frontend_dir, path, 'index.html')):
+            return send_from_directory(frontend_dir, os.path.join(path, 'index.html'))
         # Otherwise fallback to index.html
         else:
-            return send_from_directory(app.static_folder, 'index.html')
+            return send_from_directory(frontend_dir, 'index.html')
 
     return app
 
